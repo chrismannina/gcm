@@ -137,3 +137,8 @@ gcm --clear-cache
 - Support for team-shared message templates
 - Integration with commit history analysis
 - Smart context detection from changed files
+
+
+### IMPORTANT
+- gcm should actually return to the user, and allow them to edit on the spot (or retry with context or etc). need to figure out a slick way for this. 
+
