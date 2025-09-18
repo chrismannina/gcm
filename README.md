@@ -63,7 +63,3 @@ pip install -e .
 - Python 3.8+
 - Git
 - OpenAI API key
-
-## License
-
-MIT
