@@ -11,6 +11,7 @@ setup(
         "GitPython>=3.1.0",
         "PyYAML>=6.0",
         "click>=8.0.0",
+        "python-dotenv>=1.0.0",
     ],
     entry_points={
         "console_scripts": [

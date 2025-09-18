@@ -47,7 +47,10 @@ def main(commit: bool, all: bool, number: int, amend: bool, model: Optional[str]
         # Initialize LLM client
         api_key = config.get("api_key")
         if not api_key:
-            click.echo("Error: OpenAI API key not found. Set OPENAI_API_KEY environment variable or configure in .gcmrc", err=True)
+            click.echo("Error: API key not found. Please set one of the following:", err=True)
+            click.echo("  - OPENAI_API_KEY in .env file or environment variable", err=True)
+            click.echo("  - ANTHROPIC_API_KEY in .env file or environment variable", err=True)
+            click.echo("  - Configure in .gcmrc or .gcm.yml", err=True)
             sys.exit(1)
 
         llm_client = LLMClient(

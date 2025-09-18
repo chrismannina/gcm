@@ -4,6 +4,7 @@ import os
 import yaml
 from pathlib import Path
 from typing import Dict, Any, Optional
+from dotenv import load_dotenv
 
 
 class Config:
@@ -19,6 +20,8 @@ class Config:
 
     def __init__(self):
         self.config = self.DEFAULT_CONFIG.copy()
+        # Load .env file first
+        load_dotenv()
         self._load_config()
 
     def _load_config(self):
@@ -34,8 +37,13 @@ class Config:
             self._merge_config_file(user_config)
 
         # Override with environment variables
+        # Check for OpenAI API key
         if os.getenv("OPENAI_API_KEY"):
             self.config["api_key"] = os.getenv("OPENAI_API_KEY")
+        # Also check for Anthropic API key as an alternative
+        elif os.getenv("ANTHROPIC_API_KEY"):
+            self.config["api_key"] = os.getenv("ANTHROPIC_API_KEY")
+            self.config["provider"] = "anthropic"
 
     def _merge_config_file(self, config_path: Path):
         """Merge configuration from a YAML file"""
