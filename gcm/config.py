@@ -12,9 +12,8 @@ class Config:
 
     DEFAULT_CONFIG = {
         "model": "gpt-4o-mini",
-        "format": "conventional",
         "max_tokens": 100,
-        "context": ["README.md", "package.json", "pyproject.toml"],
+        "context": ["README.md"],
         "api_key": None
     }
 

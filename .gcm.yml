@@ -1,8 +1,5 @@
 # Example configuration file for gcm
 model: gpt-4o-mini
-format: conventional
 max_tokens: 100
 context:
   - README.md
-  - prd.md
-  - setup.py
