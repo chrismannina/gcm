@@ -1,0 +1,13 @@
+README.md
+setup.py
+gcm/__init__.py
+gcm/cli.py
+gcm/config.py
+gcm/git_utils.py
+gcm/llm_client.py
+gcm.egg-info/PKG-INFO
+gcm.egg-info/SOURCES.txt
+gcm.egg-info/dependency_links.txt
+gcm.egg-info/entry_points.txt
+gcm.egg-info/requires.txt
+gcm.egg-info/top_level.txt

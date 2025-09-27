@@ -1,6 +1,5 @@
 use anyhow::{Context, Result};
-use git2::{DiffOptions, Repository, StatusOptions, Statuses};
-use std::path::{Path, PathBuf};
+use git2::{DiffOptions, Repository, StatusOptions};
 
 pub struct GitAnalyzer {
     repo: Repository,
@@ -50,7 +49,7 @@ impl GitAnalyzer {
         let head_tree = head.peel_to_tree()
             .context("Failed to get HEAD tree")?;
 
-        let index = self.repo.index()
+        let mut index = self.repo.index()
             .context("Failed to get repository index")?;
 
         let index_oid = index.write_tree()

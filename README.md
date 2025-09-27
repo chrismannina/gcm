@@ -1,15 +1,24 @@
 # gcm
 
-Git commit message generator using LLMs.
+Generate intelligent git commit messages using AI.
 
 ## Install
 
+### From source
 ```bash
-pip install gcm
+git clone https://github.com/yourusername/gcm
+cd gcm
+cargo install --path .
+```
+
+### Direct cargo install
+```bash
+cargo install --git https://github.com/yourusername/gcm
 ```
 
 ## Setup
 
+Set your OpenAI API key:
 ```bash
 export OPENAI_API_KEY="sk-..."
 ```
@@ -17,49 +26,55 @@ export OPENAI_API_KEY="sk-..."
 ## Usage
 
 ```bash
-git add .
-gcm                  # generate message
-gcm -c               # generate and commit
-gcm -a               # stage all, then generate
-gcm -ac              # stage all and commit
-gcm -n 3             # show 3 alternatives
-gcm --model gpt-4    # use specific model
+# Generate commit message for staged changes
+gcm
+
+# Generate and commit immediately
+gcm -c
+
+# Stage all changes and generate
+gcm -a
+
+# Stage all and commit
+gcm -ac
+
+# Get 3 message suggestions
+gcm -n 3
 ```
 
-## Config
+## Configuration (Optional)
 
-Optional. Create `~/.gcmrc` or `.gcm.yml`:
+Create `~/.gcmrc` or `.gcm.yml` in your project:
 
 ```yaml
 model: gpt-4o-mini
-context:
-  - README.md
-  - package.json
 max_tokens: 100
 ```
 
 ## Examples
 
 ```bash
-$ git add src/auth.py
+$ git add src/main.rs
 $ gcm
 Generated commit message:
-  feat: add JWT token validation to authentication module
+  feat: add async runtime support for API calls
 
-$ gcm -c
-Committed with message: fix: resolve null pointer exception in user service
-```
-
-## Development
-
-```bash
-git clone <repo>
-cd gcm
-pip install -e .
+$ gcm -ac
+Staging all changes...
+Generated commit message:
+  fix: resolve memory leak in request handler
+Committed with message: fix: resolve memory leak in request handler
 ```
 
 ## Requirements
 
-- Python 3.8+
+- Rust 1.70+
 - Git
 - OpenAI API key
+
+## Build from source
+
+```bash
+cargo build --release
+./target/release/gcm
+```
