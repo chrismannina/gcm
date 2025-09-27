@@ -34,7 +34,7 @@ async fn main() -> Result<()> {
         std::process::exit(1);
     }
 
-    let diff = git_analyzer.get_staged_diff()?;
+    let staged_changes = git_analyzer.get_staged_diff()?;
     let context = git_analyzer.get_project_context()?;
 
     if config.api_key.is_empty() {
@@ -50,7 +50,7 @@ async fn main() -> Result<()> {
     println!("{}", "Generating commit message...".yellow());
 
     let messages = match llm_client.generate_commit_message(
-        &diff,
+        &staged_changes,
         Some(&context),
         args.number as usize,
     ).await {

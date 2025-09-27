@@ -42,7 +42,7 @@ impl GitAnalyzer {
         Ok(())
     }
 
-    pub fn get_staged_diff(&self) -> Result<String> {
+    pub fn get_staged_diff(&self) -> Result<StagedChanges> {
         let head = self.repo.head()
             .context("Failed to get HEAD reference")?;
 
@@ -72,7 +72,45 @@ impl GitAnalyzer {
             true
         }).context("Failed to format diff")?;
 
-        Ok(diff_text)
+        // Get file stats
+        let stats = diff.stats()
+            .context("Failed to get diff stats")?;
+
+        // Get changed files with their status
+        let mut changed_files = Vec::new();
+        diff.foreach(
+            &mut |delta, _progress| {
+                let file_path = delta.new_file().path()
+                    .or_else(|| delta.old_file().path())
+                    .and_then(|p| p.to_str())
+                    .unwrap_or("unknown")
+                    .to_string();
+
+                let status = match delta.status() {
+                    git2::Delta::Added => "added",
+                    git2::Delta::Deleted => "deleted",
+                    git2::Delta::Modified => "modified",
+                    git2::Delta::Renamed => "renamed",
+                    _ => "changed",
+                }.to_string();
+
+                changed_files.push(FileChange {
+                    path: file_path,
+                    status,
+                });
+                true
+            },
+            None,
+            None,
+            None,
+        ).context("Failed to iterate over diff")?;
+
+        Ok(StagedChanges {
+            diff_text,
+            files_changed: changed_files,
+            insertions: stats.insertions(),
+            deletions: stats.deletions(),
+        })
     }
 
     pub fn get_project_context(&self) -> Result<ProjectContext> {
@@ -173,4 +211,18 @@ pub struct ProjectContext {
     pub package_json: Option<String>,
     pub cargo_toml: Option<String>,
     pub recent_commits: Vec<String>,
+}
+
+#[derive(Debug)]
+pub struct StagedChanges {
+    pub diff_text: String,
+    pub files_changed: Vec<FileChange>,
+    pub insertions: usize,
+    pub deletions: usize,
+}
+
+#[derive(Debug)]
+pub struct FileChange {
+    pub path: String,
+    pub status: String,
 }

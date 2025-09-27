@@ -16,6 +16,19 @@ cargo install --path .
 cargo install --git https://github.com/yourusername/gcm
 ```
 
+## Uninstall
+
+To remove gcm from your system:
+
+```bash
+# If installed with cargo
+cargo uninstall gcm
+
+# To also remove configuration files
+rm -rf ~/.gcmrc
+rm -rf ~/.gcm
+```
+
 ## Setup
 
 Set your OpenAI API key:
